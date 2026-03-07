@@ -1,4 +1,4 @@
-@tailwind base;
+   /* /* @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
@@ -6,7 +6,7 @@
    GLOBAL SETTINGS
 ====================== */
 
-html {
+/* html {
   scroll-behavior: smooth;
 }
 
@@ -20,13 +20,13 @@ body {
   color: white;
   font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont;
   overflow-x: hidden;
-}
+} */
 
 /* ======================
    SOFT DEPTH LAYER
 ====================== */
 
-body::before {
+/* body::before {
   content: "";
   position: fixed;
   inset: 0;
@@ -43,13 +43,119 @@ body::before {
     );
   pointer-events: none;
   z-index: -1;
-}
+} */
 
 /* ======================
    TYPOGRAPHY POLISH
 ====================== */
 
-h1, h2, h3 {
+/* h1, h2, h3 {
+  @apply tracking-tight;
+}
+
+p {
+  @apply leading-relaxed text-gray-300;
+} */
+
+/* ======================
+   GLASS SYSTEM
+====================== */
+/* 
+.glass {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 1rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+}   */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ======================
+   GLOBAL SETTINGS
+====================== */
+
+/* html {
+  scroll-behavior: smooth;
+  height: 100%;
+}
+
+body {
+  min-height: 100%;
+  background: linear-gradient(
+    180deg,
+    #0b0b0d 0%,
+    #111113 50%,
+    #0b0b0d 100%
+  );
+
+  color: white;
+
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  overflow-x: hidden;
+} */
+ html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  background: linear-gradient(
+    180deg,
+    #0b0b0d 0%,
+    #111113 50%,
+    #0b0b0d 100%
+  );
+
+  color: white;
+
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  overflow-x: hidden;
+}
+
+/* ======================
+   DEPTH LIGHTING
+====================== */
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(99,102,241,0.10),
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgba(16,185,129,0.08),
+      transparent 40%
+    );
+
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* ======================
+   TYPOGRAPHY
+====================== */
+
+h1,
+h2,
+h3 {
   @apply tracking-tight;
 }
 
@@ -58,14 +164,48 @@ p {
 }
 
 /* ======================
+   IMAGE RESPONSIVENESS
+====================== */
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ======================
    GLASS SYSTEM
 ====================== */
 
 .glass {
-  background: rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255,255,255,0.06);
+
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  border: 1px solid rgba(255,255,255,0.12);
+
   border-radius: 1rem;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+
+  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+
+  transition: transform 0.25s ease;
+}
+
+.glass:hover {
+  transform: translateY(-4px);
+}
+section {
+  scroll-margin-top: 80px;
+}
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+section {
+  scroll-margin-top: 80px;
+  padding-top: 120px;
+  padding-bottom: 120px;
 }
