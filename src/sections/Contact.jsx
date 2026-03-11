@@ -100,8 +100,14 @@ export default function Contact() {
                 {item.type === "link" && (
                   <a
                     href={item.href}
-                    target={item.href.startsWith("mailto:") ? "_self" : "_blank"}
-                    rel={item.href.startsWith("mailto:") ? undefined : "noopener noreferrer"}
+                    target={item.label === "Email" ? "_top" : "_blank"}
+                    rel={item.label === "Email" ? undefined : "noopener noreferrer"}
+                    onClick={(e) => {
+                      if (item.label === "Email") {
+                        e.preventDefault();
+                        window.location.href = item.href;
+                      }
+                    }}
                     className="absolute inset-0 z-10"
                     aria-label={item.label}
                   />
