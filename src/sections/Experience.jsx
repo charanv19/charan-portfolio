@@ -1,4 +1,6 @@
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
+
+import { useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 
 const experiences = [
@@ -44,28 +46,30 @@ export default function Experience() {
 
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start start", "end start"],
+    offset: ["start start", "end end"], // 1. Changed "end start" to "end end" to eliminate the little gap below!
   });
 
-  // Horizontal movement
+  // Horizontal movement optimized for all screen widths
+  // Animating only from 0 to 0.85 gives a 15% physical timeline pause where the last card just sits on the screen.
   const x = useTransform(
     scrollYProgress,
-    [0, 1],
-    ["0%", `-${(experiences.length - 1) * 100}%`]
+    [0, 0.85],
+    ["calc(0% + 0vw)", "calc(-100% + 100vw)"] // 2. Updated mathematically to support un-squished mobile cards
   );
 
   return (
     <section
       id="experience"
       ref={ref}
-      className="relative h-[220vh]"
+      className="relative h-[300vh]" // Expanded height for a slower, smoother scroll
     >
       {/* PINNED VIEW */}
-      <div className="sticky top-0 h-screen flex items-center overflow-hidden">
+      {/* Upgraded from h-screen to h-[100dvh] mapping to fix iOS/Safari address-bar jumping */}
+      <div className="sticky top-0 h-[100dvh] flex flex-col justify-center items-center overflow-hidden w-full" style={{ position: '-webkit-sticky' }}>
         <div className="w-full">
           {/* HEADER */}
-          <div className="max-w-7xl mx-auto px-6 mb-20">
-            <p className="uppercase tracking-widest text-sm text-gray-400 mb-4">
+          <div className="max-w-7xl mx-auto px-6 mb-10 md:mb-20"> {/* 3. Responsive margin */}
+            <p className="uppercase tracking-widest text-sm text-gray-400 mb-2 md:mb-4">
               Experience
             </p>
             <h2 className="text-4xl md:text-5xl font-bold">
@@ -76,12 +80,12 @@ export default function Experience() {
           {/* HORIZONTAL TRACK */}
           <motion.div
             style={{ x }}
-            className="flex gap-12 px-[15vw]"
+            className="flex w-max gap-6 md:gap-12 pl-[5vw] pr-[15vw] md:pl-[15vw] md:pr-[30vw]" // 4. Padding on the right assures the last card rests comfortably inside the screen boundaries
           >
             {experiences.map((exp, i) => (
               <div
                 key={i}
-                className="glass min-w-[340px] max-w-[360px] p-8"
+                className="glass w-[85vw] sm:min-w-[340px] sm:max-w-[360px] shrink-0 p-6 md:p-8" // 5. Responsive card sizing so it doesn't squish on phones
               >
                 <p className="text-sm text-indigo-400 mb-2">
                   {exp.year}
@@ -89,7 +93,7 @@ export default function Experience() {
                 <h3 className="text-xl font-semibold mb-1">
                   {exp.title}
                 </h3>
-                <p className="text-sm text-gray-400 mb-4">
+                <p className="text-sm text-gray-400 mb-2 md:mb-4">
                   {exp.org}
                 </p>
                 <p className="text-gray-300 text-sm leading-relaxed">

@@ -1,5 +1,7 @@
+import { motion } from "framer-motion";
+
 import Reveal from "../components/Reveal";
-import RevealDirectional from "../components/RevealDirectional";
+
 
 const skills = [
   {
@@ -60,7 +62,7 @@ const skills = [
 
 export default function Skills() {
   return (
-    <section id="skills"  className="min-h-screen flex items-center">
+    <section id="skills" className="overflow-x-hidden overflow-y-clip">
       <div className="max-w-7xl mx-auto px-6 w-full">
 
         {/* HEADER — calm, neutral */}
@@ -76,14 +78,44 @@ export default function Skills() {
         </Reveal>
 
         {/* SKILL GRID */}
-        <div className="grid md:grid-cols-3 gap-10">
+        <motion.div 
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: false, amount: 0.1 }}
+          variants={{
+            hidden: {},
+            show: {
+              transition: {
+                staggerChildren: 0.25,
+              },
+            },
+          }}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10"
+        >
           {skills.map((skill, i) => (
-            <RevealDirectional
+            <motion.div
               key={i}
-              direction={i % 2 === 0 ? "left" : "right"}
+              custom={i}
+              variants={{
+                hidden: (i) => {
+                  const directions = [
+                    { x: -150, y: 0 },
+                    { x: 150, y: 0 },
+                    { x: 0, y: 150 },
+                    { x: 0, y: -150 },
+                  ];
+                  return { opacity: 0, ...directions[i % 4] };
+                },
+                show: { opacity: 1, x: 0, y: 0 },
+              }}
+              transition={{ type: "spring", stiffness: 300, damping: 24 }}
             >
-              <div className="glass p-8 hover:translate-y-[-6px] transition-transform duration-300">
-                <h3 className="text-xl font-semibold mb-4">
+              <motion.div
+                whileHover={{ scale: 1.05, y: -6 }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                className="glass p-8 cursor-pointer h-full"
+              >
+                <h3 className="text-xl font-semibold mb-4 text-indigo-100">
                   {skill.title}
                 </h3>
 
@@ -92,10 +124,10 @@ export default function Skills() {
                     <li key={idx}>• {point}</li>
                   ))}
                 </ul>
-              </div>
-            </RevealDirectional>
+              </motion.div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
       </div>
     </section>

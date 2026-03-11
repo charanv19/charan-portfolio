@@ -1,5 +1,7 @@
+import { motion } from "framer-motion";
+
 import Reveal from "../components/Reveal";
-import RevealDirectional from "../components/RevealDirectional";
+
 
 const projects = [
   {
@@ -27,18 +29,18 @@ const projects = [
     solution:
       "Implemented robust loading, error handling, and predictable state transitions.",
     stack: ["JavaScript", "APIs", "UX"],
-    github: "https://github.com/yourusername/api-app",
+    github: "https://github.com/charanv19/blinq-grow-hub.git",
   },
 ];
 
 export default function Projects() {
   return (
-    <section id="projects" className="min-h-screen flex items-center">
+    <section id="projects" className="overflow-x-hidden">
       <div className="max-w-7xl mx-auto px-6 w-full">
 
         {/* HEADER */}
         <Reveal>
-          <div className="mb-24 max-w-3xl">
+          <div className="mb-16 md:mb-24 max-w-3xl">
             <p className="uppercase tracking-widest text-sm text-gray-400 mb-4">
               Projects
             </p>
@@ -53,13 +55,36 @@ export default function Projects() {
         </Reveal>
 
         {/* PROJECT LIST */}
-        <div className="space-y-16">
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: false, amount: 0.1 }}
+          variants={{
+            hidden: { opacity: 0 },
+            show: {
+              opacity: 1,
+              transition: {
+                staggerChildren: 0.25, // Staggers them perfectly one by one
+              },
+            },
+          }}
+          className="space-y-16"
+        >
           {projects.map((project, i) => (
-            <RevealDirectional
+            <motion.div
               key={i}
-              direction={i % 2 === 0 ? "left" : "right"}
+              custom={i}
+              variants={{
+                hidden: (i) => ({ opacity: 0, x: i % 2 === 0 ? -150 : 150, y: 0 }),
+                show: { opacity: 1, x: 0, y: 0 },
+              }}
+              transition={{ type: "spring", stiffness: 300, damping: 24 }}
             >
-              <div className="glass p-10 grid md:grid-cols-3 gap-10 items-start">
+              <motion.div
+                whileHover={{ scale: 1.02, y: -8 }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                className="glass p-6 sm:p-8 lg:p-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10 items-start cursor-pointer"
+              >
 
                 {/* TITLE + GITHUB */}
                 <div>
@@ -80,12 +105,14 @@ export default function Projects() {
 
                   <div className="flex flex-wrap gap-2 mt-4">
                     {project.stack.map((tech, idx) => (
-                      <span
+                      <motion.span
                         key={idx}
-                        className="text-xs px-3 py-1 rounded-full bg-white/10 text-gray-200"
+                        whileHover={{ scale: 1.1, backgroundColor: "rgba(99, 102, 241, 0.2)" }}
+                        transition={{ type: "spring", stiffness: 400, damping: 15 }}
+                        className="text-xs px-3 py-1 rounded-full bg-white/10 text-gray-200 transition-colors"
                       >
                         {tech}
-                      </span>
+                      </motion.span>
                     ))}
                   </div>
                 </div>
@@ -110,10 +137,10 @@ export default function Projects() {
                   </p>
                 </div>
 
-              </div>
-            </RevealDirectional>
+              </motion.div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
       </div>
     </section>

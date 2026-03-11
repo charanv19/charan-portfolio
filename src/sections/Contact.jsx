@@ -1,4 +1,6 @@
 import { motion } from "framer-motion";
+
+
 import {
   FaEnvelope,
   FaLinkedin,
@@ -25,7 +27,7 @@ const contacts = [
   {
     label: "GitHub",
     icon: FaGithub,
-    href: "https://github.com/charanvenishetty",
+    href: "https://github.com/charanv19",
     gradient: "from-purple-500 to-fuchsia-600",
     type: "link",
   },
@@ -41,14 +43,14 @@ const contacts = [
 
 export default function Contact() {
   return (
-    <section id="contact" className="min-h-screen flex items-center">
+    <section id="contact" className="relative mt-24 md:mt-0 z-20">
       <div className="max-w-6xl mx-auto px-6 w-full text-center">
 
         {/* HEADER */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: false }}
           transition={{ duration: 0.7, ease: "easeOut" }}
           className="mb-20"
         >
@@ -70,7 +72,7 @@ export default function Contact() {
         <motion.div
           initial="hidden"
           whileInView="show"
-          viewport={{ once: true }}
+          viewport={{ once: false }}
           variants={{
             hidden: {},
             show: { transition: { staggerChildren: 0.15 } },
@@ -84,11 +86,15 @@ export default function Contact() {
                 hidden: { opacity: 0, y: 30 },
                 show: { opacity: 1, y: 0 },
               }}
-              whileHover={{ y: -8 }}
+              whileHover={{ scale: 1.05, y: -12 }}
               transition={{ type: "spring", stiffness: 260, damping: 22 }}
-              className={`relative rounded-2xl p-[1px] bg-gradient-to-r ${item.gradient}`}
+              className={`relative rounded-2xl p-[1px] bg-gradient-to-r ${item.gradient} group cursor-pointer`}
             >
-              <div className="relative h-full w-full rounded-2xl bg-black py-10 flex flex-col items-center justify-center gap-4 overflow-hidden">
+              <motion.div
+                whileHover={{ scale: 0.98 }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                className="relative h-full w-full rounded-2xl bg-black py-10 flex flex-col items-center justify-center gap-4 overflow-hidden"
+              >
 
                 {/* WHOLE CARD CLICK (for links) */}
                 {item.type === "link" && (
@@ -131,7 +137,7 @@ export default function Contact() {
                   </div>
                 )}
 
-              </div>
+              </motion.div>
             </motion.div>
           ))}
         </motion.div>

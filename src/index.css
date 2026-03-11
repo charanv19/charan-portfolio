@@ -101,12 +101,32 @@ body {
 
   overflow-x: hidden;
 } */
- html {
+  
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ------------------------------
+   GLOBAL RESET
+------------------------------ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
   scroll-behavior: smooth;
 }
 
+/* ------------------------------
+   BODY / BACKGROUND
+------------------------------ */
+
 body {
   min-height: 100vh;
+
   background: linear-gradient(
     180deg,
     #0b0b0d 0%,
@@ -115,47 +135,68 @@ body {
   );
 
   color: white;
-
   font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont;
 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  overflow-x: hidden;
+  /* 
+    CRITICAL MOBILE FIX: 
+    Use 'clip' instead of 'hidden'. 
+    'clip' prevents horizontal zooming on Android/Samsung, 
+    but does NOT break 'position: sticky' on iOS/Safari!
+  */
+  overflow-x: clip;
 }
 
-/* ======================
-   DEPTH LIGHTING
-====================== */
+/* ------------------------------
+   AMBIENT INFINITE ORB LAYER
+------------------------------ */
+
+@keyframes slow-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; transform: scale(1.05); }
+}
+
+@keyframes orbit-1 {
+  0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 0.6; }
+  33% { transform: translate(100px, -120px) rotate(120deg) scale(1.3); opacity: 1; }
+  66% { transform: translate(-60px, 80px) rotate(240deg) scale(0.9); opacity: 0.7; }
+  100% { transform: translate(0, 0) rotate(360deg) scale(1); opacity: 0.6; }
+}
+
+@keyframes orbit-2 {
+  0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 0.6; }
+  33% { transform: translate(-100px, 120px) rotate(120deg) scale(1.3); opacity: 1; }
+  66% { transform: translate(80px, -60px) rotate(240deg) scale(0.85); opacity: 0.7; }
+  100% { transform: translate(0, 0) rotate(360deg) scale(1); opacity: 0.6; }
+}
 
 body::before {
   content: "";
   position: fixed;
-  inset: 0;
-
-  background:
-    radial-gradient(
-      circle at top left,
-      rgba(99,102,241,0.10),
-      transparent 40%
-    ),
-    radial-gradient(
-      circle at bottom right,
-      rgba(16,185,129,0.08),
-      transparent 40%
-    );
-
+  inset: -30%;
   pointer-events: none;
   z-index: -1;
+  background: radial-gradient(circle at 30% 30%, rgba(99, 102, 241, 0.35), transparent 55%);
+  animation: orbit-1 18s linear infinite;
 }
 
-/* ======================
-   TYPOGRAPHY
-====================== */
+body::after {
+  content: "";
+  position: fixed;
+  inset: -30%;
+  pointer-events: none;
+  z-index: -1;
+  background: radial-gradient(circle at 70% 70%, rgba(16, 185, 129, 0.25), transparent 55%);
+  animation: orbit-2 22s linear infinite reverse;
+}
 
-h1,
-h2,
-h3 {
+/* ------------------------------
+   TYPOGRAPHY
+------------------------------ */
+
+h1, h2, h3 {
   @apply tracking-tight;
 }
 
@@ -163,49 +204,112 @@ p {
   @apply leading-relaxed text-gray-300;
 }
 
-/* ======================
+/* ------------------------------
    IMAGE RESPONSIVENESS
-====================== */
+------------------------------ */
 
-img {
+img,
+video {
   max-width: 100%;
   height: auto;
   display: block;
 }
 
-/* ======================
-   GLASS SYSTEM
-====================== */
+/* ------------------------------
+   SECTION SYSTEM
+------------------------------ */
+
+section {
+  width: 100%;
+  scroll-margin-top: 50px;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+@media (min-width: 768px) {
+  section {
+    scroll-margin-top: 90px;
+    padding-top: 120px;
+    padding-bottom: 120px;
+  }
+}
+
+/* ------------------------------
+   CONTAINER SYSTEM
+------------------------------ */
+
+.container-main {
+  width: 100%;
+  max-width: 1280px;
+  margin: auto;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+@media (min-width: 768px) {
+  .container-main {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+}
+
+/* ------------------------------
+   GLASS CARD
+------------------------------ */
 
 .glass {
-  background: rgba(255,255,255,0.06);
+  background: rgba(255,255,255,0.05);
 
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 
   border: 1px solid rgba(255,255,255,0.12);
 
-  border-radius: 1rem;
+  border-radius: 14px;
+
+  padding: 1.5rem;
 
   box-shadow: 0 10px 40px rgba(0,0,0,0.6);
 
-  transition: transform 0.25s ease;
+  transition: transform .25s ease, box-shadow .25s ease;
 }
 
 .glass:hover {
   transform: translateY(-4px);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.8);
 }
-section {
-  scroll-margin-top: 80px;
-}
-.container {
-  max-width: 1200px;
+
+/* ------------------------------
+   HERO IMAGE SAFETY
+------------------------------ */
+
+.hero-image {
+  width: 100%;
+  max-width: 380px;
   margin: auto;
-  padding-left: 24px;
-  padding-right: 24px;
 }
-section {
-  scroll-margin-top: 80px;
-  padding-top: 120px;
-  padding-bottom: 120px;
+
+@media (min-width: 768px) {
+  .hero-image {
+    max-width: 100%;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-image {
+    max-width: 520px;
+  }
+}
+
+/* ------------------------------
+   FIX MOBILE NAV OVERFLOW
+------------------------------ */
+
+.nav-scroll {
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.nav-scroll::-webkit-scrollbar {
+  display: none;
 }
